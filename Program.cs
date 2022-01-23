@@ -31,14 +31,17 @@ namespace FirstBankOfSuncoast
                 Console.WriteLine("Please choose an option: ");
                 Console.WriteLine("-------------------------------------------");
                 Console.WriteLine("Make a (d)eposit ");
-                //create deposit method that prompts for account: savings or checking
+                //create deposit method that prompts for account to deposit into: savings or checking
 
                 Console.WriteLine("Make a (w)ithdrawl ");
-                //create withdrawl method that prompts for account: savings or checking
-                Console.WriteLine("(R)emove a dinosaur from the park entirely ");
+                //create withdrawl method that prompts for account to withdrawl from: savings or checking
 
-                Console.WriteLine("(T)ransfer a dinosaur to a different enclosure ");
-                Console.WriteLine("(S)ummarize dinosaur diet types ");
+                Console.WriteLine("View (b)alance ");
+                //create balance method that prompts for account for which user wants balance displayed: savings or checking
+
+                Console.WriteLine("View transaction (h)istory ");
+                // create transactions method to view transactions by savings or checking
+
                 Console.WriteLine("(Q)uit ");
                 Console.WriteLine("-------------------------------------------");
 
@@ -50,6 +53,9 @@ namespace FirstBankOfSuncoast
                         break;
 
                     case "w":
+                        break;
+
+                    case "b":
                         break;
 
                     case "Q":
@@ -65,20 +71,12 @@ namespace FirstBankOfSuncoast
 
                 }
                 database.SaveTransactions();
-
-
-                // As a user I should have a menu option to see the balance of my savings and checking.
-                // As a user I should be able to see the list of transactions designated savings.
-                // As a user I should be able to see the list of transactions designated checking.
-
                 // The application should, after each transaction, write all the transactions to a file. This is the same file the application loads.
+
             }
         }
     }
-
-
-
-
+}
 
 
 // Never allow withdrawing more money than is available. That is, we cannot allow our checking or savings balances to go negative.
