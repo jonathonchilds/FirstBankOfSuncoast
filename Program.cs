@@ -58,7 +58,7 @@ namespace FirstBankOfSuncoast
                 switch (choice)
                 {
                     case "d":
-                        //TransactionDatabase.AddTransaction(database); <---- whyyyyy!?
+                        TransactionDatabase.AddTransaction(database);
                         break;
 
                     case "w":
@@ -82,7 +82,7 @@ namespace FirstBankOfSuncoast
 
 
                 }
-                //database.SaveTransactions();
+                database.SaveTransaction();
                 // The application should, after each transaction, write all the transactions to a file. This is the same file the application loads.
 
             }

@@ -8,28 +8,12 @@ using System;
 
 namespace FirstBankOfSuncoast
 {
-
-    class Transaction
-    {
-        public string AccountType { get; set; }
-        public string TransactionAmount { get; set; }
-        public DateTime WhenAcquired { get; set; }
-
-        public void DisplayTransactions()
-        {
-            Console.WriteLine($"Account used: {AccountType} ");
-            Console.WriteLine($"Deposit/Withdrawl amount: {TransactionAmount} ");
-            Console.WriteLine($"Transaction date & time: {WhenAcquired} ");
-
-            Console.WriteLine();
-        }
-    }
     // create Transaction class to support both checking and savings as well as deposits and withdrawls.
     class TransactionDatabase
     {
         //store a history of transactions in a SINGLE List<Transaction>.
         //create transactions method to view transactions by savings or checking
-        public List<TransactionDatabase> Transactions { get; set; } = new List<TransactionDatabase>();
+        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
 
         public void LoadTransaction()
         {
@@ -39,7 +23,7 @@ namespace FirstBankOfSuncoast
 
                 var csvReader = new CsvReader(fileReader, CultureInfo.InvariantCulture);
 
-                Transactions = csvReader.GetRecords<TransactionDatabase>().ToList();
+                Transactions = csvReader.GetRecords<Transaction>().ToList();
             }
         }
         public void SaveTransaction()
@@ -54,19 +38,36 @@ namespace FirstBankOfSuncoast
         }
         public void CheckingAccount()
         {
-            var checkingBalance =
+            //var checkingBalance =
+        }
+        static string PromptForString(string prompt)
+        {
+            Console.Write(prompt);
+            var userInput = Console.ReadLine().ToUpper();
+            return userInput;
         }
 
-        public void AddTransaction(TransactionDatabase add)
+        public static void AddTransaction(TransactionDatabase database)
         {
-            Console.WriteLine("Would you like to deposit these funds to your (c)hecking or (s)avings account? ");
-            var choice = Console.ReadLine().ToLower();
-            if (choice == "c")
-            {
+            var transaction = new Transaction();
+            Console.WriteLine();
+            transaction.AccountType = PromptForString("Would you like to deposit these funds to your (c)hecking or (s)avings account? ").ToLower();
 
-            }
 
-            Transactions.Add(add);
+            database.Transactions.Add(transaction);
+
+            //     public static void Add(DinosaurDatabase database)
+            // {
+            //     var dinosaur = new Dinosaur();
+            //     Console.WriteLine();
+            //     dinosaur.Name = PromptForString("What is the dinosaurs name? ").ToUpper();
+            //     dinosaur.DietType = PromptForDiet("Is this dinosaur an (H)erbivore or a (C)arnivore? ").ToUpper();
+            //     dinosaur.Weight = PromptForInteger("How much does your dinosaur weigh, in pounds? ");
+            //     dinosaur.EnclosureNumber = PromptForInteger("Please assign an enclosure number to this dinosaur: ");
+            //     dinosaur.WhenAcquired = DateTime.Now;
+            //     database.Dinosaurs.Add(dinosaur);
+            // }
+
         }
 
     }
