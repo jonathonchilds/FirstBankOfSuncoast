@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-
+using CsvHelper;
 
 namespace FirstBankOfSuncoast
 {
@@ -10,7 +12,31 @@ namespace FirstBankOfSuncoast
     class Transaction
     {
         //store a history of transactions in a SINGLE List<Transaction>.
+        //create transactions method to view transactions by savings or checking
         public List<Transaction> Transactions { get; set; } = new List<Transaction>();
+
+        public void LoadTransactions()
+        {
+            if (File.Exists("transactions.csv"))
+            {
+                var fileReader = new StreamReader("transactions.csv");
+
+                var csvReader = new CsvReader(fileReader, CultureInfo.InvariantCulture);
+
+                Transactions = csvReader.GetRecords<Transaction>().ToList();
+            }
+        }
+        public void SaveTransactions()
+        {
+            var fileWriter = new StreamWriter("transactions.csv");
+            var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
+
+            csvWriter.WriteRecords(Transactions);
+
+            fileWriter.Close();
+
+        }
+
     }
 
     class Program
@@ -20,9 +46,9 @@ namespace FirstBankOfSuncoast
         // The application should load past transactions from a file when it first starts.
         static void Main(string[] args)
         {
-            var database = new TransactionDatabase();
+            //var database = new TransactionDatabase();
 
-            database.LoadTransactions();
+            //database.LoadTransactions();
 
             var keepGoing = true;
 
@@ -34,15 +60,31 @@ namespace FirstBankOfSuncoast
                 Console.WriteLine("-------------------------------------------");
                 Console.WriteLine("Make a (d)eposit ");
                 //create deposit method that prompts for account to deposit into: savings or checking
+                //ask how much to deposit
+                //make sure deposit input is in appropriate format
+                //enter deposit input amount into transaction registry
+                //update that account's balance
+                //prompt for method to "do something else?"
+
 
                 Console.WriteLine("Make a (w)ithdrawl ");
                 //create withdrawl method that prompts for account to withdrawl from: savings or checking
+                //ask how much to withdraw
+                //make sure withdrawl input is in appropriate format
+                //enter withdrawl input amount into transaction registry
+                //update that account's balance
+                //prompt for method to "do something else?"
 
                 Console.WriteLine("View (b)alance ");
                 //create balance method that prompts for account for which user wants balance displayed: savings or checking
+                //pull balance from appropriate location
+                //display balance
+                //prompt for method to "do something else?"
 
                 Console.WriteLine("View transaction (h)istory ");
-                // create transactions method to view transactions by savings or checking
+                //display all transaction data 
+
+                //
 
                 Console.WriteLine("(Q)uit ");
                 Console.WriteLine("-------------------------------------------");
@@ -52,6 +94,7 @@ namespace FirstBankOfSuncoast
                 switch (choice)
                 {
                     case "d":
+                        Transactions.Add();
                         break;
 
                     case "w":
@@ -72,7 +115,7 @@ namespace FirstBankOfSuncoast
 
 
                 }
-                database.SaveTransactions();
+                //database.SaveTransactions();
                 // The application should, after each transaction, write all the transactions to a file. This is the same file the application loads.
 
             }
