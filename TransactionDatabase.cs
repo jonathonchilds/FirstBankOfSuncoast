@@ -46,13 +46,29 @@ namespace FirstBankOfSuncoast
             var userInput = Console.ReadLine().ToUpper();
             return userInput;
         }
+        static int PromptForInteger(string prompt)
+        {
+            Console.Write(prompt);
+            int userInput;
+            var isThisGoodInput = Int32.TryParse(Console.ReadLine(), out userInput);
+            if (isThisGoodInput)
+            {
+                return userInput;
+            }
+            else
+            {
+                Console.WriteLine("Sorry, that isn't a valid input. I'm using 0 as your answer. ");
+                return 0;
+            }
+
+        }
 
         public static void AddTransaction(TransactionDatabase database)
         {
             var transaction = new Transaction();
             Console.WriteLine();
             transaction.AccountType = PromptForString("Would you like to deposit these funds to your (c)hecking or (s)avings account? ").ToLower();
-
+            transaction.TransactionAmount = PromptForInteger("How much would you like to deposit? ");
 
             database.Transactions.Add(transaction);
 

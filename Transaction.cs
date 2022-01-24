@@ -6,7 +6,7 @@ namespace FirstBankOfSuncoast
     class Transaction
     {
         public string AccountType { get; set; }
-        public string TransactionAmount { get; set; }
+        public int TransactionAmount { get; set; }
         public DateTime WhenAcquired { get; set; }
 
         public void DisplayTransactions()
