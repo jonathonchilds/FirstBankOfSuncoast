@@ -1,43 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using CsvHelper;
 
 namespace FirstBankOfSuncoast
 {
-
-    // create Transaction class to support both checking and savings as well as deposits and withdrawls.
-    class Transaction
-    {
-        //store a history of transactions in a SINGLE List<Transaction>.
-        //create transactions method to view transactions by savings or checking
-        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
-
-        public void LoadTransactions()
-        {
-            if (File.Exists("transactions.csv"))
-            {
-                var fileReader = new StreamReader("transactions.csv");
-
-                var csvReader = new CsvReader(fileReader, CultureInfo.InvariantCulture);
-
-                Transactions = csvReader.GetRecords<Transaction>().ToList();
-            }
-        }
-        public void SaveTransactions()
-        {
-            var fileWriter = new StreamWriter("transactions.csv");
-            var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
-
-            csvWriter.WriteRecords(Transactions);
-
-            fileWriter.Close();
-
-        }
-
-    }
 
     class Program
     {
@@ -46,9 +10,9 @@ namespace FirstBankOfSuncoast
         // The application should load past transactions from a file when it first starts.
         static void Main(string[] args)
         {
-            //var database = new TransactionDatabase();
+            var database = new TransactionDatabase();
 
-            //database.LoadTransactions();
+            database.LoadTransaction();
 
             var keepGoing = true;
 
@@ -94,7 +58,7 @@ namespace FirstBankOfSuncoast
                 switch (choice)
                 {
                     case "d":
-                        Transactions.Add();
+                        TransactionDatabase.AddTransaction(database);
                         break;
 
                     case "w":
