@@ -3,9 +3,27 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using CsvHelper;
+using System;
+
 
 namespace FirstBankOfSuncoast
 {
+
+    class Transaction
+    {
+        public string AccountType { get; set; }
+        public string TransactionAmount { get; set; }
+        public DateTime WhenAcquired { get; set; }
+
+        public void DisplayTransactions()
+        {
+            Console.WriteLine($"Account used: {AccountType} ");
+            Console.WriteLine($"Deposit/Withdrawl amount: {TransactionAmount} ");
+            Console.WriteLine($"Transaction date & time: {WhenAcquired} ");
+
+            Console.WriteLine();
+        }
+    }
     // create Transaction class to support both checking and savings as well as deposits and withdrawls.
     class TransactionDatabase
     {
@@ -34,9 +52,20 @@ namespace FirstBankOfSuncoast
             fileWriter.Close();
 
         }
+        public void CheckingAccount()
+        {
+            var checkingBalance =
+        }
 
         public void AddTransaction(TransactionDatabase add)
         {
+            Console.WriteLine("Would you like to deposit these funds to your (c)hecking or (s)avings account? ");
+            var choice = Console.ReadLine().ToLower();
+            if (choice == "c")
+            {
+
+            }
+
             Transactions.Add(add);
         }
 

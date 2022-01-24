@@ -58,7 +58,7 @@ namespace FirstBankOfSuncoast
                 switch (choice)
                 {
                     case "d":
-                        TransactionDatabase.AddTransaction(database);
+                        //TransactionDatabase.AddTransaction(database); <---- whyyyyy!?
                         break;
 
                     case "w":
@@ -67,7 +67,10 @@ namespace FirstBankOfSuncoast
                     case "b":
                         break;
 
-                    case "Q":
+                    case "h":
+                        break;
+
+                    case "q":
                         keepGoing = false;
                         break;
 
