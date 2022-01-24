@@ -6,12 +6,10 @@ namespace FirstBankOfSuncoast
     class Program
     {
 
-
-        // The application should load past transactions from a file when it first starts.
         static void Main(string[] args)
         {
             var database = new TransactionDatabase();
-
+            // The application should load past transactions from a file when it first starts.
             database.LoadTransaction();
 
             var keepGoing = true;

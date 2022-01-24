@@ -36,21 +36,27 @@ namespace FirstBankOfSuncoast
             fileWriter.Close();
 
         }
-        public void CheckingAccount()
+        public int CheckingAccount()
         {
-            //var checkingBalance =
+            List<int> CheckingBalance;
+
         }
-        static string PromptForString(string prompt)
+        static string PromptForAccountType(string prompt)
         {
             Console.Write(prompt);
-            var userInput = Console.ReadLine().ToUpper();
+            var userInput = Console.ReadLine().ToLower();
+            if (userInput == "c")
+            {
+                CheckingAccount();
+            }
+
             return userInput;
         }
         static int PromptForInteger(string prompt)
         {
             Console.Write(prompt);
             int userInput;
-            var isThisGoodInput = Int32.TryParse(Console.ReadLine(), out userInput);
+            var isThisGoodInput = Int32.TryParse(Console.ReadLine(), out userInput); //<---- need be in decimal format
             if (isThisGoodInput)
             {
                 return userInput;
@@ -67,22 +73,10 @@ namespace FirstBankOfSuncoast
         {
             var transaction = new Transaction();
             Console.WriteLine();
-            transaction.AccountType = PromptForString("Would you like to deposit these funds to your (c)hecking or (s)avings account? ").ToLower();
+            transaction.AccountType = PromptForAccountType("Would you like to deposit these funds to your (c)hecking or (s)avings account? ").ToLower();
             transaction.TransactionAmount = PromptForInteger("How much would you like to deposit? ");
 
             database.Transactions.Add(transaction);
-
-            //     public static void Add(DinosaurDatabase database)
-            // {
-            //     var dinosaur = new Dinosaur();
-            //     Console.WriteLine();
-            //     dinosaur.Name = PromptForString("What is the dinosaurs name? ").ToUpper();
-            //     dinosaur.DietType = PromptForDiet("Is this dinosaur an (H)erbivore or a (C)arnivore? ").ToUpper();
-            //     dinosaur.Weight = PromptForInteger("How much does your dinosaur weigh, in pounds? ");
-            //     dinosaur.EnclosureNumber = PromptForInteger("Please assign an enclosure number to this dinosaur: ");
-            //     dinosaur.WhenAcquired = DateTime.Now;
-            //     database.Dinosaurs.Add(dinosaur);
-            // }
 
         }
 
