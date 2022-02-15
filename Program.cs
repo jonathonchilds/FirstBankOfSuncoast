@@ -1,4 +1,9 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using CsvHelper;
+using System;
 
 namespace FirstBankOfSuncoast
 {
@@ -9,7 +14,6 @@ namespace FirstBankOfSuncoast
         static void Main(string[] args)
         {
             var database = new TransactionDatabase();
-            // The application should load past transactions from a file when it first starts.
             database.LoadTransaction();
 
             var keepGoing = true;
@@ -17,37 +21,12 @@ namespace FirstBankOfSuncoast
             while (keepGoing)
             {
                 Console.WriteLine("");
-
                 Console.WriteLine("Please choose an option: ");
                 Console.WriteLine("-------------------------------------------");
                 Console.WriteLine("Make a (d)eposit ");
-                //create deposit method that prompts for account to deposit into: savings or checking
-                //ask how much to deposit
-                //make sure deposit input is in appropriate format
-                //enter deposit input amount into transaction registry
-                //update that account's balance
-                //prompt for method to "do something else?"
-
-
                 Console.WriteLine("Make a (w)ithdrawl ");
-                //create withdrawl method that prompts for account to withdrawl from: savings or checking
-                //ask how much to withdraw
-                //make sure withdrawl input is in appropriate format
-                //enter withdrawl input amount into transaction registry
-                //update that account's balance
-                //prompt for method to "do something else?"
-
                 Console.WriteLine("View (b)alance ");
-                //create balance method that prompts for account for which user wants balance displayed: savings or checking
-                //pull balance from appropriate location
-                //display balance
-                //prompt for method to "do something else?"
-
                 Console.WriteLine("View transaction (h)istory ");
-                //display all transaction data 
-
-                //
-
                 Console.WriteLine("(Q)uit ");
                 Console.WriteLine("-------------------------------------------");
 
@@ -56,13 +35,15 @@ namespace FirstBankOfSuncoast
                 switch (choice)
                 {
                     case "d":
-                        TransactionDatabase.AddTransaction(database);
+                        TransactionDatabase.AddFunds(database);
                         break;
 
                     case "w":
+                        TransactionDatabase.WithdrawFunds(database);
                         break;
 
                     case "b":
+                        TransactionDatabase.BalanceCheck(database);
                         break;
 
                     case "h":

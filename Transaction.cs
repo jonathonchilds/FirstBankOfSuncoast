@@ -1,5 +1,5 @@
 using System;
-
+using System.Collections.Generic;
 
 namespace FirstBankOfSuncoast
 {
@@ -8,6 +8,7 @@ namespace FirstBankOfSuncoast
         public string AccountType { get; set; }
         public int TransactionAmount { get; set; }
         public DateTime WhenAcquired { get; set; }
+        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
 
         public void DisplayTransactions()
         {

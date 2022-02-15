@@ -15,43 +15,109 @@ namespace FirstBankOfSuncoast
         //create transactions method to view transactions by savings or checking
         public List<Transaction> Transactions { get; set; } = new List<Transaction>();
 
+        public static void AddFunds(TransactionDatabase database)
+        {
+            var transaction = new Transaction();
+            Console.WriteLine();
+            transaction.AccountType = DepositAccountType("Would you like to deposit these funds to your (c)hecking or (s)avings account? ").ToLower();
+            transaction.TransactionAmount = PromptForInteger("How much would you like to deposit?");
+            transaction.WhenAcquired = DateTime.Now;
+            database.Transactions.Add(transaction);
+        }
+
+        public static void WithdrawFunds(TransactionDatabase database)
+        {
+            var transaction = new Transaction();
+            Console.WriteLine();
+            transaction.AccountType = DepositAccountType("Would you like to withdraw these funds from your (c)hecking or (s)avings account? ").ToLower();
+            transaction.TransactionAmount = PromptForInteger("How much would you like to withdraw?");
+            transaction.WhenAcquired = DateTime.Now;
+            database.Transactions.Add(transaction);
+        }
+
+        public static void BalanceCheck(TransactionDatabase database)
+        {
+            Console.WriteLine();
+            var viewPreference = PromptForString("Would you like to view the balance of your (s)avings or (c)hecking? ").ToUpper();
+            Console.WriteLine();
+            var viewChecking = database.Transactions.Sum(checking => database.transactions.AccountType);
+            var viewSavings = database.Transactions.Sum(savings => database.Transactions.AccountType);
+
+            if (database.Transactions.Count == 0)
+            {
+                Console.WriteLine("It looks like you haven't made any deposits, yet.");
+            }
+            else if (viewPreference == "C")
+            {
+                foreach (var checkingDeposit in viewChecking)
+                {
+                    viewChecking.CheckingBalance();
+                }
+            }
+            else if (viewPreference == "S")
+            {
+                foreach (var savingsDeposit in viewSavings)
+                {
+                    viewSavings.SavingsBalance();
+                }
+            }
+        }
+
         public void LoadTransaction()
         {
             if (File.Exists("transactions.csv"))
             {
                 var fileReader = new StreamReader("transactions.csv");
-
                 var csvReader = new CsvReader(fileReader, CultureInfo.InvariantCulture);
-
                 Transactions = csvReader.GetRecords<Transaction>().ToList();
+                fileReader.Close();
             }
         }
         public void SaveTransaction()
         {
             var fileWriter = new StreamWriter("transactions.csv");
             var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
-
             csvWriter.WriteRecords(Transactions);
-
             fileWriter.Close();
-
         }
-        public int CheckingAccount()
-        {
-            List<int> CheckingBalance;
 
-        }
-        static string PromptForAccountType(string prompt)
+        public static string DepositAccountType(string prompt)
         {
             Console.Write(prompt);
             var userInput = Console.ReadLine().ToLower();
             if (userInput == "c")
             {
-                CheckingAccount();
+                return ("Checking Deposit");
             }
+            if (userInput == "s")
+            {
+                return ("Savings Deposit");
+            }
+            return ("Invalid Input");
+        }
 
+        public static string WithdrawlAccountType(string prompt)
+        {
+            Console.Write(prompt);
+            var userInput = Console.ReadLine().ToLower();
+            if (userInput == "c")
+            {
+                return ("Checking Withdrawl");
+            }
+            if (userInput == "s")
+            {
+                return ("Savings Withdrawl");
+            }
+            return ("Invalid Input");
+        }
+
+        static string PromptForString(string prompt)
+        {
+            Console.Write(prompt);
+            var userInput = Console.ReadLine().ToUpper();
             return userInput;
         }
+
         static int PromptForInteger(string prompt)
         {
             Console.Write(prompt);
@@ -69,16 +135,7 @@ namespace FirstBankOfSuncoast
 
         }
 
-        public static void AddTransaction(TransactionDatabase database)
-        {
-            var transaction = new Transaction();
-            Console.WriteLine();
-            transaction.AccountType = PromptForAccountType("Would you like to deposit these funds to your (c)hecking or (s)avings account? ").ToLower();
-            transaction.TransactionAmount = PromptForInteger("How much would you like to deposit? ");
 
-            database.Transactions.Add(transaction);
-
-        }
 
     }
 }
