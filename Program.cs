@@ -11,15 +11,62 @@ namespace FirstBankOfSuncoast
     class Program
     {
 
+        public static void LoadTransaction()
+        {
+            if (File.Exists("transactions.csv"))  //<--- is File.Exists a function of IO or CsvHelper or something?
+            {
+                var fileReader = new StreamReader("transactions.csv");
+                var csvReader = new CsvReader(fileReader, CultureInfo.InvariantCulture);
+                var transactionFile = csvReader.GetRecords<Transaction>().ToList();
+                fileReader.Close();
+            }
+        }
+
+        public static void SaveTransaction(List<Transaction> transactions)
+        {
+            var fileWriter = new StreamWriter("transactions.csv");
+            var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
+            csvWriter.WriteRecords(transactions);
+            fileWriter.Close();
+        }
+
+        static string PromptForString(string prompt)
+        {
+            Console.Write(prompt);
+            return Console.ReadLine().ToUpper();
+        }
+
+        static int PromptForInteger(string prompt)
+        {
+            Console.Write(prompt);
+            int userInput;
+            if (Int32.TryParse(Console.ReadLine(), out userInput))
+            {
+                return userInput;
+            }
+            else
+            {
+                Console.WriteLine("Sorry, that isn't a valid input. I'm using 0 as your answer. ");
+                return 0;
+            }
+
+        }
+
         static void Main(string[] args)
         {
-            var database = new TransactionDatabase();
-            database.LoadTransaction();
+            //var database = new TransactionDatabase(); <----- why are these two lines unnecessary?
+            //database.LoadTransaction();
+
+            var transaction = new TransactionDatabase();
+
+            //transaction.LoadTransaction();
 
             var keepGoing = true;
 
             while (keepGoing)
             {
+                LoadTransaction();
+
                 Console.WriteLine("");
                 Console.WriteLine("Please choose an option: ");
                 Console.WriteLine("-------------------------------------------");
@@ -35,15 +82,15 @@ namespace FirstBankOfSuncoast
                 switch (choice)
                 {
                     case "d":
-                        TransactionDatabase.AddFunds(database);
+                        TransactionDatabase.Deposit(transaction);
                         break;
 
                     case "w":
-                        TransactionDatabase.WithdrawFunds(database);
+                        TransactionDatabase.WithdrawFunds(transaction);
                         break;
 
                     case "b":
-                        TransactionDatabase.BalanceCheck(database);
+                        TransactionDatabase.BalanceCheck(transaction);
                         break;
 
                     case "h":
@@ -61,7 +108,7 @@ namespace FirstBankOfSuncoast
 
 
                 }
-                database.SaveTransaction();
+                SaveTransaction();
                 // The application should, after each transaction, write all the transactions to a file. This is the same file the application loads.
 
             }

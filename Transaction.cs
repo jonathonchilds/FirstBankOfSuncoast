@@ -1,23 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using CsvHelper;
 
 namespace FirstBankOfSuncoast
 {
     class Transaction
     {
         public string AccountType { get; set; }
+        public string TransactionType { get; set; }
         public int TransactionAmount { get; set; }
-        public DateTime WhenAcquired { get; set; }
+
+
         public List<Transaction> Transactions { get; set; } = new List<Transaction>();
 
-        public void DisplayTransactions()
-        {
-            Console.WriteLine($"Account used: {AccountType} ");
-            Console.WriteLine($"Deposit/Withdrawl amount: {TransactionAmount} ");
-            Console.WriteLine($"Transaction date & time: {WhenAcquired} ");
-
-            Console.WriteLine();
-        }
     }
 }
 
