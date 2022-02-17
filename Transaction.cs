@@ -13,7 +13,6 @@ namespace FirstBankOfSuncoast
         public string TransactionType { get; set; }
         public int TransactionAmount { get; set; }
 
-
         public List<Transaction> Transactions { get; set; } = new List<Transaction>();
 
     }

@@ -1,7 +1,3 @@
-AccountType,TransactionAmount,WhenAcquired
-c,100,01/01/0001 00:00:00
-c,100,01/01/0001 00:00:00
-c,0,01/01/0001 00:00:00
-c,0,01/01/0001 00:00:00
-checking,100,01/01/0001 00:00:00
-checking,500,02/15/2022 14:49:52
+AccountType,TransactionType,TransactionAmount
+Checking,Deposit,500
+Savings,Deposit,15000

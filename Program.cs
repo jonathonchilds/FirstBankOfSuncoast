@@ -10,8 +10,7 @@ namespace FirstBankOfSuncoast
 
     class Program
     {
-
-        public static void LoadTransaction()
+        public static void LoadTransactions(List<Transaction> transactions)
         {
             if (File.Exists("transactions.csv"))  //<--- is File.Exists a function of IO or CsvHelper or something?
             {
@@ -22,7 +21,7 @@ namespace FirstBankOfSuncoast
             }
         }
 
-        public static void SaveTransaction(List<Transaction> transactions)
+        public static void SaveTransactions(List<Transaction> transactions)
         {
             var fileWriter = new StreamWriter("transactions.csv");
             var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
@@ -52,20 +51,43 @@ namespace FirstBankOfSuncoast
 
         }
 
+        public static string DepositAccountType(string prompt)
+        {
+            Console.Write(prompt);
+            var userInput = Console.ReadLine().ToLower();
+            if (userInput == "c")
+            {
+                return ("Checking Deposit");
+            }
+            if (userInput == "s")
+            {
+                return ("Savings Deposit");
+            }
+            return ("Invalid Input");
+        }
+
+        public static string WithdrawlAccountType(string prompt)
+        {
+            Console.Write(prompt);
+            var userInput = Console.ReadLine().ToLower();
+            if (userInput == "c")
+            {
+                return ("Checking Withdrawl");
+            }
+            if (userInput == "s")
+            {
+                return ("Savings Withdrawl");
+            }
+            return ("Invalid Input");
+        }
+
         static void Main(string[] args)
         {
-            //var database = new TransactionDatabase(); <----- why are these two lines unnecessary?
-            //database.LoadTransaction();
-
-            var transaction = new TransactionDatabase();
-
-            //transaction.LoadTransaction();
-
+            var transactions = new List<Transaction>();
             var keepGoing = true;
-
             while (keepGoing)
             {
-                LoadTransaction();
+                LoadTransactions(transactions);
 
                 Console.WriteLine("");
                 Console.WriteLine("Please choose an option: ");
@@ -82,15 +104,72 @@ namespace FirstBankOfSuncoast
                 switch (choice)
                 {
                     case "d":
-                        TransactionDatabase.Deposit(transaction);
+
+                        Console.WriteLine("Would you like to deposit these funds to your (c)hecking or (s)avings account? ");
+                        var depositAccount = Console.ReadLine().ToLower();
+                        if (depositAccount == "c")
+                        {
+                            var checkingDeposit = new Transaction();
+                            checkingDeposit.AccountType = "Checking";
+                            checkingDeposit.TransactionType = "Deposit";
+                            checkingDeposit.TransactionAmount = PromptForInteger("Please enter deposit amount.");
+                            Console.WriteLine($"${checkingDeposit.TransactionAmount} was deposited into your checking account. ");
+                            transactions.Add(checkingDeposit);
+                        }
+                        else if (depositAccount == "s")
+                        {
+                            var savingsDeposit = new Transaction();
+                            savingsDeposit.AccountType = "Savings";
+                            savingsDeposit.TransactionType = "Deposit";
+
+                            savingsDeposit.TransactionAmount = PromptForInteger("How much would you like to deposit into your savings account? ");
+                            Console.WriteLine("");
+                            Console.WriteLine($"${savingsDeposit.TransactionAmount} has been deposited into your savings account. ");
+                            Console.WriteLine("");
+
+                            transactions.Add(savingsDeposit);
+                        }
+                        else
+                        {
+
+                        }
+                        SaveTransactions(transactions);
                         break;
 
+
                     case "w":
-                        TransactionDatabase.WithdrawFunds(transaction);
+                        var transaction = new Transaction();
+                        Console.WriteLine();
+                        transaction.AccountType = DepositAccountType("Would you like to withdraw these funds from your (c)hecking or (s)avings account? ").ToLower();
+                        transaction.TransactionAmount = PromptForInteger("How much would you like to withdraw?");
                         break;
 
                     case "b":
-                        TransactionDatabase.BalanceCheck(transaction);
+                        Console.WriteLine();
+                        var viewPreference = PromptForString("Would you like to view the balance of your (s)avings or (c)hecking? ").ToUpper();
+                        Console.WriteLine();
+                        //var viewChecking = database.Transactions.Sum(checking => database.AccountType);
+                        //var viewSavings = database.Transactions.Sum(savings => database.Transactions.AccountType);
+
+                        // if (database.Transactions.Count == 0)
+                        // {
+                        //     Console.WriteLine("It looks like you haven't made any deposits, yet.");
+                        // }
+                        // else if (viewPreference == "C")
+                        // {
+                        //     foreach (var checkingDeposit in viewChecking)
+                        //     {
+                        //         viewChecking.CheckingBalance();
+                        //     }
+                        // }
+                        // else if (viewPreference == "S")
+                        // {
+                        //     foreach (var savingsDeposit in viewSavings)
+                        //     {
+                        //         viewSavings.SavingsBalance();
+                        //     }
+                        // }
+
                         break;
 
                     case "h":
@@ -108,8 +187,6 @@ namespace FirstBankOfSuncoast
 
 
                 }
-                SaveTransaction();
-                // The application should, after each transaction, write all the transactions to a file. This is the same file the application loads.
 
             }
         }
