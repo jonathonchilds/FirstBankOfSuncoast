@@ -141,7 +141,23 @@ namespace FirstBankOfSuncoast
                             var checkingWithdrawal = new Transaction();
                             checkingWithdrawal.AccountType = "Checking";
                             checkingWithdrawal.TransactionType = "Withdrawal";
-                            checkingWithdrawal.TransactionAmount = PromptForInteger("How much would you like to withdraw? ");
+                            var withdrawalAmount = checkingWithdrawal.TransactionAmount = PromptForInteger("How much would you like to withdraw? ");
+                            var totalCheckingDepositsVerification = transactions.Where(transaction => transaction.AccountType == "Checking" && transaction.AccountType == "Deposit")
+                                                    .Sum(transaction => transaction.TransactionAmount);
+                            var totalCheckingWithdrawalsVerification = transactions.Where(transaction => transaction.AccountType == "Checking" && transaction.AccountType == "Withdrawal")
+                                                                    .Sum(transaction => transaction.TransactionAmount);
+                            var totalCheckingVerification = totalCheckingDepositsVerification - totalCheckingWithdrawalsVerification;
+                            if (totalCheckingVerification >= withdrawalAmount)
+                            {
+                                Console.WriteLine($"${checkingWithdrawal.TransactionAmount} has been withdrawn from your checking account. ");
+                            }
+                            else if (totalCheckingVerification < withdrawalAmount)
+                            {
+                                Console.WriteLine($"Sorry, your checking account has a balance of ${totalCheckingVerification}.");
+                            }
+
+
+                            // if (checkingWithdrawal.TransactionAmount > ) <---- make totalChecking a method to use here
                             Console.WriteLine($"${checkingWithdrawal.TransactionAmount} has been withdrawn from your checking account. ");
                             transactions.Add(checkingWithdrawal);
                         }
@@ -189,7 +205,7 @@ namespace FirstBankOfSuncoast
                                 Console.WriteLine($"{transaction.TransactionType} from {transaction.AccountType}: ${transaction.TransactionAmount} ");
                             }
                         }
-                        Console.WriteLine("");
+
                         break;
 
                     case "q":
