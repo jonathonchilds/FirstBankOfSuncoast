@@ -1,3 +1,2 @@
 AccountType,TransactionType,TransactionAmount
-Checking,Deposit,500
-Savings,Deposit,15000
+Checking,Withdrawal,700

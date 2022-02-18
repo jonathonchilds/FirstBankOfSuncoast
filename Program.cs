@@ -104,7 +104,6 @@ namespace FirstBankOfSuncoast
                 switch (choice)
                 {
                     case "d":
-
                         Console.WriteLine("Would you like to deposit these funds to your (c)hecking or (s)avings account? ");
                         var depositAccount = Console.ReadLine().ToLower();
                         if (depositAccount == "c")
@@ -121,58 +120,76 @@ namespace FirstBankOfSuncoast
                             var savingsDeposit = new Transaction();
                             savingsDeposit.AccountType = "Savings";
                             savingsDeposit.TransactionType = "Deposit";
-
                             savingsDeposit.TransactionAmount = PromptForInteger("How much would you like to deposit into your savings account? ");
                             Console.WriteLine("");
                             Console.WriteLine($"${savingsDeposit.TransactionAmount} has been deposited into your savings account. ");
                             Console.WriteLine("");
-
                             transactions.Add(savingsDeposit);
                         }
                         else
                         {
-
+                            Console.WriteLine("Sorry, that's not a valid input.");
                         }
                         SaveTransactions(transactions);
                         break;
 
-
                     case "w":
-                        var transaction = new Transaction();
-                        Console.WriteLine();
-                        transaction.AccountType = DepositAccountType("Would you like to withdraw these funds from your (c)hecking or (s)avings account? ").ToLower();
-                        transaction.TransactionAmount = PromptForInteger("How much would you like to withdraw?");
+                        Console.WriteLine("Would you like to withdraw these funds from your (c)hecking or (s)avings account?");
+                        var withdrawalAccount = Console.ReadLine().ToLower();
+                        if (withdrawalAccount == "c")
+                        {
+                            var checkingWithdrawal = new Transaction();
+                            checkingWithdrawal.AccountType = "Checking";
+                            checkingWithdrawal.TransactionType = "Withdrawal";
+                            checkingWithdrawal.TransactionAmount = PromptForInteger("How much would you like to withdraw? ");
+                            Console.WriteLine($"${checkingWithdrawal.TransactionAmount} has been withdrawn from your checking account. ");
+                            transactions.Add(checkingWithdrawal);
+                        }
+                        else if (withdrawalAccount == "s")
+                        {
+                            var savingsWithdrawal = new Transaction();
+                            savingsWithdrawal.AccountType = "Savings";
+                            savingsWithdrawal.TransactionType = "Withdrawal";
+                            savingsWithdrawal.TransactionAmount = PromptForInteger("How much would you like to withdraw?");
+                            Console.WriteLine($"${savingsWithdrawal.TransactionAmount} has been withdrawn from your savings account. ");
+                            transactions.Add(savingsWithdrawal);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Sorry, that's not a valid input.");
+                        }
+                        SaveTransactions(transactions);
                         break;
 
                     case "b":
-                        Console.WriteLine();
-                        var viewPreference = PromptForString("Would you like to view the balance of your (s)avings or (c)hecking? ").ToUpper();
-                        Console.WriteLine();
-                        //var viewChecking = database.Transactions.Sum(checking => database.AccountType);
-                        //var viewSavings = database.Transactions.Sum(savings => database.Transactions.AccountType);
+                        var totalCheckingDeposits = transactions.Where(transaction => transaction.AccountType == "Checking" && transaction.AccountType == "Deposit")
+                                                    .Sum(transaction => transaction.TransactionAmount);
+                        var totalCheckingWithdrawals = transactions.Where(transaction => transaction.AccountType == "Checking" && transaction.AccountType == "Withdrawal")
+                                                                .Sum(transaction => transaction.TransactionAmount);
+                        var totalChecking = totalCheckingDeposits - totalCheckingWithdrawals;
 
-                        // if (database.Transactions.Count == 0)
-                        // {
-                        //     Console.WriteLine("It looks like you haven't made any deposits, yet.");
-                        // }
-                        // else if (viewPreference == "C")
-                        // {
-                        //     foreach (var checkingDeposit in viewChecking)
-                        //     {
-                        //         viewChecking.CheckingBalance();
-                        //     }
-                        // }
-                        // else if (viewPreference == "S")
-                        // {
-                        //     foreach (var savingsDeposit in viewSavings)
-                        //     {
-                        //         viewSavings.SavingsBalance();
-                        //     }
-                        // }
-
+                        var totalSavingsDeposits = transactions.Where(transaction => transaction.AccountType == "Savings" && transaction.AccountType == "Deposit")
+                                                               .Sum(transaction => transaction.TransactionAmount);
+                        var totalSavingsWithdrawals = transactions.Where(transaction => transaction.AccountType == "Savings" && transaction.AccountType == "Withdrawal")
+                                                                  .Sum(transaction => transaction.TransactionAmount);
+                        var totalSavings = totalSavingsDeposits - totalSavingsWithdrawals;
+                        Console.WriteLine($"Your total checking account balance is ${totalChecking}");
+                        Console.WriteLine($"Your total savings account balance is ${totalSavings}");
                         break;
 
                     case "h":
+                        foreach (var transaction in transactions)
+                        {
+                            if (transaction.AccountType == "Deposit")
+                            {
+                                Console.WriteLine($"{transaction.TransactionType} to {transaction.AccountType}: ${transaction.TransactionAmount} ");
+                            }
+                            else if (transaction.AccountType == "Withdrawal")
+                            {
+                                Console.WriteLine($"{transaction.TransactionType} from {transaction.AccountType}: ${transaction.TransactionAmount} ");
+                            }
+                        }
+                        Console.WriteLine("");
                         break;
 
                     case "q":
